@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAK Solutions — Intelligent Automation & Knowledge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0B0C;
+    --gray-900:#17181A;
+    --gray-600:#5B5F66;
+    --gray-400:#8B8E94;
+    --gray-100:#F2F2F0;
+    --gray-50:#F8F8F7;
+    --white:#FFFFFF;
+    --line:#E7E7E4;
+
+    --c-warehouse:#D98E1E;
+    --c-fleet:#2E8B4E;
+    --c-cctv:#2C63C7;
+    --c-fire:#C8352E;
+    --c-solar:#E0A800;
+    --c-remote:#54575C;
+    --c-battery:#3B8F6B;
+    --c-touch:#B4581F;
+    --c-voice:#7B3FE4;
+    --c-data:#5A3FB8;
+    --c-telecom:#1E9E5A;
+    --c-network:#2C63C7;
+
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:9px;
+    --shadow:0 1px 2px rgba(11,11,12,0.04), 0 8px 24px rgba(11,11,12,0.06);
+    --shadow-lg:0 4px 10px rgba(11,11,12,0.05), 0 20px 48px rgba(11,11,12,0.09);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Inter Tight','Inter',sans-serif;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin:0;
+    color:var(--ink);
+    line-height:1.05;
+  }
+  p{margin:0 0 1em;color:var(--gray-600);}
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+  @media(max-width:640px){.wrap{padding:0 20px;}}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:14.5px;font-weight:600;padding:13px 24px;border-radius:100px;
+    transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--ink);color:var(--white);}
+  .btn-primary:hover{background:#000;box-shadow:0 6px 18px rgba(0,0,0,0.18);transform:translateY(-1px);}
+  .btn-outline{border:1.5px solid var(--line);color:var(--ink);}
+  .btn-outline:hover{border-color:var(--ink);}
+
+  /* ---------- header ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1200px;margin:0 auto;padding:0 32px;
+    height:72px;display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:8px;}
+  .brand img{height:34px;width:auto;}
+  nav.links{display:flex;gap:30px;}
+  nav.links a{
+    font-size:14px;font-weight:500;color:var(--gray-600);
+    padding:6px 0;transition:color .15s;
+  }
+  nav.links a:hover{color:var(--ink);}
+  .nav-right{display:flex;align-items:center;gap:16px;}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--ink);width:40px;height:40px;border-radius:10px;cursor:pointer;}
+  .menu-btn svg{width:16px;height:16px;}
+  @media(max-width:900px){
+    nav.links{display:none;}
+    .nav-right .btn-outline{display:none;}
+    .menu-btn{display:block;}
+  }
+  #mobile-nav{
+    display:none;position:fixed;top:72px;left:0;right:0;bottom:0;z-index:99;
+    background:var(--white);padding:28px 32px;overflow-y:auto;
+  }
+  #mobile-nav.open{display:block;}
+  #mobile-nav a{display:block;padding:16px 0;font-family:'Inter Tight',sans-serif;font-size:22px;font-weight:700;border-bottom:1px solid var(--line);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:168px 0 90px;
+    background:var(--gray-50);
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+  @media(max-width:940px){.hero-grid{grid-template-columns:1fr;}}
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;font-weight:600;color:var(--gray-600);
+    background:var(--white);border:1px solid var(--line);border-radius:100px;padding:7px 16px;margin-bottom:24px;
+  }
+  .hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--c-fire);flex:none;}
+  .hero h1{font-size:clamp(38px,5.4vw,64px);max-width:640px;}
+  .hero .lede{margin-top:22px;max-width:520px;font-size:18px;color:var(--gray-600);}
+  .hero-actions{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
+  .hero-stats{display:flex;gap:40px;margin-top:52px;flex-wrap:wrap;}
+  .hero-stats div b{display:block;font-family:'Inter Tight',sans-serif;font-size:28px;font-weight:800;color:var(--ink);}
+  .hero-stats div span{font-size:12.5px;color:var(--gray-400);}
+  .hero-visual{
+    border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-lg);
+    border:1px solid var(--line);position:relative;
+  }
+  .hero-visual img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  /* ---------- section shell ---------- */
+  section{padding:100px 0;}
+  .section-head{margin-bottom:52px;max-width:640px;}
+  .eyebrow-label{
+    display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.01em;
+    padding:6px 14px;border-radius:100px;margin-bottom:18px;color:var(--white);
+  }
+  .section-head h2{font-size:clamp(28px,3.6vw,42px);}
+  .section-head .desc{margin-top:14px;font-size:16px;color:var(--gray-600);max-width:520px;}
+
+  /* ---------- expertise grid ---------- */
+  #expertise{background:var(--gray-50);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .exp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media(max-width:940px){.exp-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.exp-grid{grid-template-columns:1fr;}}
+  .exp-card{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius-md);
+    padding:26px;display:flex;flex-direction:column;gap:16px;transition:box-shadow .18s, transform .18s;
+  }
+  .exp-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
+  .exp-icon{
+    width:48px;height:48px;border-radius:12px;overflow:hidden;
+  }
+  .exp-icon img{width:100%;height:100%;object-fit:cover;}
+  .exp-card h4{font-size:16.5px;font-weight:700;}
+  .exp-card p{font-size:13.5px;margin:0;color:var(--gray-600);}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:start;}
+  @media(max-width:900px){.about-grid{grid-template-columns:1fr;}}
+  .about-copy p{font-size:16px;}
+  .about-copy p:first-of-type{color:var(--ink);font-size:19px;font-weight:500;}
+  .pillars{display:flex;flex-direction:column;gap:14px;}
+  .pillar{border:1px solid var(--line);border-radius:var(--radius-md);padding:24px 26px;background:var(--gray-50);}
+  .pillar .num{font-size:12px;font-weight:700;color:var(--gray-400);letter-spacing:0.06em;}
+  .pillar h4{font-size:20px;margin-top:6px;margin-bottom:6px;}
+  .pillar p{font-size:14px;margin:0;}
+
+  .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:60px;}
+  @media(max-width:700px){.mv-grid{grid-template-columns:1fr;}}
+  .mv-cell{background:var(--ink);color:var(--white);border-radius:var(--radius-lg);padding:38px;}
+  .mv-cell.alt{background:var(--gray-100);color:var(--ink);}
+  .mv-cell .tag{font-size:12px;font-weight:700;letter-spacing:0.08em;color:#B9B9B9;}
+  .mv-cell.alt .tag{color:var(--gray-400);}
+  .mv-cell h3{font-size:24px;margin:12px 0 12px;color:inherit;}
+  .mv-cell p{color:#C7C7C7;font-size:14.5px;margin:0;}
+  .mv-cell.alt p{color:var(--gray-600);}
+
+  /* ---------- service modules ---------- */
+  .module{padding:88px 0;border-top:1px solid var(--line);}
+  .mod-grid{display:grid;grid-template-columns:0.95fr 1.05fr;gap:56px;align-items:center;}
+  .mod-grid.rev{direction:rtl;}
+  .mod-grid.rev > *{direction:ltr;}
+  @media(max-width:940px){.mod-grid,.mod-grid.rev{grid-template-columns:1fr;direction:ltr;}}
+  .mod-media{
+    border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:var(--gray-50);
+    box-shadow:var(--shadow);
+  }
+  .mod-media img{width:100%;height:auto;display:block;}
+  .mod-media.pad{padding:26px;}
+  .mod-copy .problem{
+    font-size:14.5px;color:var(--gray-600);border-left:2px solid var(--line);padding-left:16px;margin-bottom:18px;
+  }
+  .mod-copy h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:16px;}
+  .mod-copy .solution{font-size:16px;max-width:520px;}
+
+  .feature-list{display:flex;flex-direction:column;gap:14px;margin-top:26px;}
+  .feature-list li{display:flex;gap:12px;font-size:14.5px;color:var(--gray-600);align-items:flex-start;}
+  .feature-list li .fdot{width:6px;height:6px;border-radius:50%;margin-top:8px;flex:none;}
+  .feature-list li b{color:var(--ink);font-weight:600;}
+
+  .chip-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px;}
+  .chip{
+    font-size:13px;font-weight:500;padding:8px 14px;border:1px solid var(--line);border-radius:100px;color:var(--gray-600);background:var(--white);
+  }
+
+  .spec-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
+  .spec-box{border:1px solid var(--line);border-radius:var(--radius-md);padding:18px 22px;min-width:140px;background:var(--gray-50);}
+  .spec-box .v{font-family:'Inter Tight',sans-serif;font-size:22px;font-weight:800;color:var(--ink);}
+  .spec-box .l{font-size:11.5px;color:var(--gray-400);margin-top:3px;}
+
+  .mini-table{width:100%;border-collapse:collapse;margin-top:26px;font-size:13.5px;}
+  .mini-table th{text-align:left;font-size:11px;font-weight:700;letter-spacing:0.05em;color:var(--gray-400);padding:9px 0;border-bottom:1px solid var(--line);}
+  .mini-table td{padding:11px 0;border-bottom:1px solid var(--line);color:var(--gray-600);}
+  .mini-table tr:last-child td{border-bottom:none;}
+  .mini-table td:first-child{color:var(--ink);font-weight:600;}
+
+  .quote-block{margin-top:26px;border:1px solid var(--line);border-radius:var(--radius-md);padding:22px 24px;background:var(--gray-50);}
+  .quote-block .line{font-size:14px;margin-bottom:8px;color:var(--gray-600);}
+  .quote-block .line b{color:var(--ink);}
+  .quote-block .line:last-child{margin-bottom:0;}
+
+  .benefit-strip{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .benefit-pill{font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:100px;color:var(--white);}
+
+  /* ---------- achievements ---------- */
+  #achievements{background:var(--gray-50);border-top:1px solid var(--line);}
+  .ach-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius-lg);padding:38px;margin-bottom:24px;box-shadow:var(--shadow);}
+  .ach-card h3{font-size:24px;margin-bottom:12px;}
+  .ach-card p{font-size:15px;}
+  .ach-media{border-radius:var(--radius-md);overflow:hidden;margin:22px 0;border:1px solid var(--line);}
+  table.data{width:100%;border-collapse:collapse;margin-top:18px;font-size:13px;}
+  table.data th{text-align:left;background:var(--gray-100);color:var(--gray-600);font-weight:700;font-size:10.5px;letter-spacing:0.05em;padding:10px 14px;position:sticky;top:0;}
+  table.data td{padding:9px 14px;border-bottom:1px solid var(--line);color:var(--gray-600);}
+  table.data tr:hover td{color:var(--ink);}
+  .table-scroll{max-height:400px;overflow-y:auto;border:1px solid var(--line);border-radius:var(--radius-md);margin-top:20px;}
+  .table-scroll table.data{margin-top:0;}
+
+  /* ---------- contact ---------- */
+  #contact{background:var(--ink);color:var(--white);}
+  .contact-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;}
+  @media(max-width:900px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-copy h2{font-size:clamp(32px,4.6vw,50px);color:var(--white);margin-bottom:18px;}
+  .contact-copy p{color:#B9B9B9;font-size:16px;max-width:460px;}
+  .contact-list{margin-top:34px;border-top:1px solid #2A2A2C;}
+  .contact-list li{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid #2A2A2C;}
+  .contact-list .k{font-size:12px;color:#8A8A8C;font-weight:600;letter-spacing:0.05em;}
+  .contact-list .v{font-size:16px;color:var(--white);}
+  .contact-panel{background:#17181A;border:1px solid #2A2A2C;border-radius:var(--radius-lg);padding:38px;}
+  .contact-panel .tag{font-size:12px;font-weight:700;letter-spacing:0.06em;color:#8A8A8C;}
+  .contact-panel h3{font-size:24px;color:var(--white);margin:12px 0 16px;}
+  .contact-panel p{color:#B9B9B9;font-size:14.5px;margin-bottom:24px;}
+  .contact-panel .btn-primary{background:var(--white);color:var(--ink);width:100%;justify-content:center;}
+  .contact-panel .btn-primary:hover{background:#eee;}
+
+  footer{padding:36px 0;border-top:1px solid var(--line);}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+  .foot-inner img{height:24px;}
+  .foot-inner span{font-size:12.5px;color:var(--gray-400);}
+
+  .reveal{transition:opacity .6s ease, transform .6s ease;}
+  .reveal.pre{opacity:0;transform:translateY(14px);}
+  .reveal.pre.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal.pre{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <img src="images/iak_logo_clean.png" alt="IAK Solutions">
+    </a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#expertise">Expertise</a>
+      <a href="#services">Services</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a href="tel:+923165147531" class="btn btn-outline">+92 316 514 7531</a>
+      <a href="#contact" class="btn btn-primary">Get started</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-nav">
+  <a href="#about">About</a>
+  <a href="#expertise">Expertise</a>
+  <a href="#services">Services</a>
+  <a href="#achievements">Achievements</a>
+  <a href="#contact">Contact</a>
+  <a href="tel:+923165147531">Call +92 316 514 7531</a>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-eyebrow"><span class="dot"></span> Rawalpindi, Pakistan — Founded 2020</div>
+          <h1>Intelligent automation, built into every system.</h1>
+          <p class="lede">IAK Solutions designs and installs the infrastructure behind secure, connected, and efficient operations — from AI-CCTV and fire detection to solar power, data centre cabling, and network management.</p>
+          <div class="hero-actions">
+            <a href="#services" class="btn btn-primary">Explore our systems</a>
+            <a href="#achievements" class="btn btn-outline">See our work</a>
+          </div>
+          <div class="hero-stats">
+            <div><b>12+</b><span>System categories</span></div>
+            <div><b>2020</b><span>Year founded</span></div>
+            <div><b>PTCL</b><span>Enterprise client</span></div>
+            <div><b>24/7</b><span>Monitoring &amp; support</span></div>
+          </div>
+        </div>
+        <div class="hero-visual reveal">
+          <img src="images/fleet_cover.jpg" alt="Connected fleet of trucks with AI tracking overlay">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREAS OF EXPERTISE -->
+  <section id="expertise">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow-label" style="background:var(--ink);">AREAS OF EXPERTISE</span>
+        <h2>Twelve systems. One integrator.</h2>
+        <p class="desc">Every card below links to the full breakdown further down the page.</p>
+      </div>
+      <div class="exp-grid reveal">
+        <a class="exp-card" href="#warehouse"><div class="exp-icon"><img src="images/icon_warehouse_tile.png" alt=""></div><h4>Digital Warehouse Solution</h4><p>Cloud-based WMS for real-time inventory control.</p></a>
+        <a class="exp-card" href="#fleet"><div class="exp-icon"><img src="images/icon_fleet_tile.png" alt=""></div><h4>Fleet Technology Optimization</h4><p>Asset intelligence and real-time monitoring.</p></a>
+        <a class="exp-card" href="#cctv"><div class="exp-icon"><img src="images/icon_cctv_tile.png" alt=""></div><h4>AI-CCTV Surveillance</h4><p>Cameras that understand what they're watching.</p></a>
+        <a class="exp-card" href="#remote"><div class="exp-icon"><img src="images/icon_cctv_tile.png" alt="" style="filter:grayscale(1) brightness(1.15);"></div><h4>Remote Monitoring System</h4><p>Watch any site from anywhere, live.</p></a>
+        <a class="exp-card" href="#fire"><div class="exp-icon"><img src="images/icon_fire_tile.png" alt=""></div><h4>Fire Detection &amp; Alarm</h4><p>Smoke, heat, and flame detection systems.</p></a>
+        <a class="exp-card" href="#batteries"><div class="exp-icon"><img src="images/icon_batteries_tile.png" alt=""></div><h4>Batteries for Solar / Data Centre</h4><p>Lithium packs from 105Ah to 50kWh+.</p></a>
+        <a class="exp-card" href="#solar"><div class="exp-icon"><img src="images/icon_solar_tile.png" alt=""></div><h4>Solar System Installation</h4><p>Residential, commercial, and industrial solar.</p></a>
+        <a class="exp-card" href="#touch"><div class="exp-icon"><img src="images/icon_touch_tile.png" alt=""></div><h4>Touch Display / Screen</h4><p>Interactive panels for meetings and training.</p></a>
+        <a class="exp-card" href="#voice"><div class="exp-icon"><img src="images/icon_touch_tile.png" alt="" style="filter:hue-rotate(220deg);"></div><h4>AI-Powered Voice Agent</h4><p>Natural-language conversations, 24/7.</p></a>
+        <a class="exp-card" href="#cabling"><div class="exp-icon"><img src="images/icon_datacentre_tile.png" alt=""></div><h4>Data Centre &amp; Cable Harnessing</h4><p>Clean, traceable cable infrastructure.</p></a>
+        <a class="exp-card" href="#telecom"><div class="exp-icon"><img src="images/icon_telecom_tile.png" alt=""></div><h4>Wired &amp; Wireless Telecom</h4><p>Structured cabling, Wi-Fi, VoIP, and more.</p></a>
+        <a class="exp-card" href="#network"><div class="exp-icon"><img src="images/icon_network_tile.png" alt=""></div><h4>Network Monitoring &amp; Management</h4><p>24/7 oversight and cyber protection.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow-label" style="background:var(--c-cctv);">ABOUT US</span>
+        <h2>One roof for automation, security, and connectivity.</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <p>At IAK Solutions, our journey began with a simple yet powerful idea — to bring intelligent automation and innovative technology under one roof. Headquartered in Rawalpindi, we started in 2020 with a clear mission: to simplify operations through automation and give businesses the technology to grow securely and efficiently.</p>
+          <p>We specialize in installing and integrating advanced systems including digital warehouse and fleet optimization, CCTV surveillance, fire detection and alarm systems, solar panels and batteries, and wired and wireless network setups. What sets us apart isn't just expertise — it's a customer-first approach to every project, whether that means securing a home, upgrading a business network, or managing a complex warehouse.</p>
+        </div>
+        <div class="pillars reveal">
+          <div class="pillar">
+            <span class="num">INNOVATION</span>
+            <h4>Rewriting the rules</h4>
+            <p>Every project is a chance to challenge outdated ways and bring smart solutions that make a real difference.</p>
+          </div>
+          <div class="pillar">
+            <span class="num">QUALITY</span>
+            <h4>Not optional — essential</h4>
+            <p>Internationally recognized design protocols and premium-grade components on every installation.</p>
+          </div>
+          <div class="pillar">
+            <span class="num">DELIVERY</span>
+            <h4>On time, every time</h4>
+            <p>A proven track record of delivering projects on schedule, often ahead of it.</p>
+          </div>
+        </div>
+      </div>
+      <div class="mv-grid reveal">
+        <div class="mv-cell">
+          <span class="tag">VISION</span>
+          <h3>A global technological revolution.</h3>
+          <p>To uplift the living standards of the societies we serve through innovative technological solutions, delivered in line with our belief system.</p>
+        </div>
+        <div class="mv-cell alt">
+          <span class="tag">MISSION</span>
+          <h3>Unsurpassed technology, never-ending improvement.</h3>
+          <p>To become a global leader by developing expertise geared toward state-of-the-art engineering products and services, always improving quality, service, and productivity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="services"></div>
+
+  <!-- 03 WAREHOUSE -->
+  <div class="module" id="warehouse">
+    <div class="wrap">
+      <div class="mod-grid reveal">
+        <div class="mod-media" style="display:grid;grid-template-rows:1fr 1.3fr;">
+          <img src="images/warehouse_cover.jpg" alt="Warehouse racking stacked with inventory boxes">
+          <img src="images/wms_diagram.jpg" alt="Warehouse Management System cycle: receiving, placement, picking, packing, dispatching">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-warehouse);">DIGITAL WAREHOUSE</span>
+          <h2>Replace paper logs with real-time visibility.</h2>
+          <p class="problem">Paper logs, manual counts, and spreadsheets lead to delays, errors, and zero visibility into warehouse operations.</p>
+          <p class="solution">We deploy a fully cloud-based Warehouse Management System (WMS) that controls day-to-day operations — monitoring inventory, tracking shipments, and streamlining picking and packing.</p>
+          <ul class="feature-list">
+            <li><span class="fdot" style="background:var(--c-warehouse);"></span><span><b>Stock tracking &amp; rotation —</b> live location and automatic FIFO/FEFO sequencing.</span></li>
+            <li><span class="fdot" style="background:var(--c-warehouse);"></span><span><b>Kitting &amp; backorder processing —</b> bundle components and automate unfulfilled orders.</span></li>
+            <li><span class="fdot" style="background:var(--c-warehouse);"></span><span><b>Advance reporting —</b> consolidated data whenever you need it.</span></li>
+          </ul>
+          <div class="benefit-strip">
+            <span class="benefit-pill" style="background:var(--c-warehouse);">Optimized processes</span>
+            <span class="benefit-pill" style="background:var(--c-warehouse);">Reduced admin work</span>
+            <span class="benefit-pill" style="background:var(--c-warehouse);">Full inventory visibility</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 FLEET -->
+  <div class="module" id="fleet">
+    <div class="wrap">
+      <div class="mod-grid rev reveal">
+        <div class="mod-media">
+          <img src="images/fleet_diagram.jpg" alt="Fleet Technology Optimization features: GPS tracking, geofencing, diagnostics, alerts">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-fleet);">FLEET TECHNOLOGY OPTIMIZATION</span>
+          <h2>Fleets as a strategic differentiator, not a spreadsheet.</h2>
+          <p class="problem">Traditional fleet management still means juggling spreadsheets and reactive repairs — it hasn't kept pace with digital transformation.</p>
+          <p class="solution">Fleet Technology Optimization (FTO) unites asset intelligence, real-time monitoring, service automation, and sustainability into one scalable framework.</p>
+          <div class="chip-row">
+            <span class="chip">GPS tracking</span><span class="chip">Geofencing</span><span class="chip">Route optimization</span><span class="chip">Driver behaviour analysis</span><span class="chip">Anti-theft measures</span><span class="chip">Cost tracking</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 CCTV -->
+  <div class="module" id="cctv">
+    <div class="wrap">
+      <div class="mod-grid reveal">
+        <div class="mod-media" style="display:grid;grid-template-columns:1fr 1fr;">
+          <img src="images/cctv_cover.jpg" alt="Digital lock symbolizing AI-secured surveillance" style="height:100%;object-fit:cover;">
+          <img src="images/camera_types.jpg" alt="Dome, bullet, PTZ, IP, thermal, and wireless camera types" style="height:100%;object-fit:cover;">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-cctv);">AI-CCTV SURVEILLANCE</span>
+          <h2>From passive recording to real understanding.</h2>
+          <p class="problem">Conventional CCTV is reviewed only after an incident — too late to prevent theft, accidents, or missed safety violations.</p>
+          <p class="solution">AI-CCTV analyzes video in real time, detects unusual behaviour, and makes decisions based on predefined rules. It's not just watching — it's understanding what's being watched.</p>
+          <ul class="feature-list">
+            <li><span class="fdot" style="background:var(--c-cctv);"></span><span><b>Object &amp; facial recognition —</b> identifies people, vehicles, and matches access lists.</span></li>
+            <li><span class="fdot" style="background:var(--c-cctv);"></span><span><b>Real-time threat detection —</b> flags loitering, trespassing, crowd formation.</span></li>
+            <li><span class="fdot" style="background:var(--c-cctv);"></span><span><b>Instant alerts —</b> real-time SMS, app, and email notification.</span></li>
+          </ul>
+          <div class="chip-row">
+            <span class="chip">Dome</span><span class="chip">Bullet</span><span class="chip">PTZ</span><span class="chip">IP camera</span><span class="chip">Thermal</span><span class="chip">Wireless</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 REMOTE MONITORING -->
+  <div class="module" id="remote">
+    <div class="wrap">
+      <div class="mod-grid rev reveal">
+        <div class="mod-media">
+          <img src="images/remote_diagram.jpg" alt="Remote monitoring diagram: POE cameras, switch, NVR, and display">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-remote);">REMOTE MONITORING</span>
+          <h2>Your property, watched from anywhere.</h2>
+          <p class="solution">Cameras connect over network cable through a POE switch into an NVR — clients monitor any situation live through mobile and web applications, from anywhere in the world.</p>
+          <div class="spec-row">
+            <div class="spec-box"><div class="v">POE</div><div class="l">Camera + switch wiring</div></div>
+            <div class="spec-box"><div class="v">NVR</div><div class="l">Central video recorder</div></div>
+            <div class="spec-box"><div class="v">24/7</div><div class="l">Maintenance &amp; support</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 FIRE -->
+  <div class="module" id="fire">
+    <div class="wrap">
+      <div class="mod-grid reveal">
+        <div class="mod-media pad" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;background:var(--white);">
+          <img src="images/fire_smoke_heat.jpg" alt="Smoke and heat detectors" style="border-radius:10px;">
+          <img src="images/fire_components2.jpg" alt="Flame detector, alarm button, control panel, sounder, notification device" style="border-radius:10px;">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-fire);">FIRE DETECTION &amp; ALARM SYSTEM</span>
+          <h2>Detect signs of fire before they become a crisis.</h2>
+          <p class="solution">A safety system that detects smoke, heat, or flame and alerts people through sirens, alarms, and notifications so they can evacuate and act quickly — essential for protecting life, property, and assets.</p>
+          <ul class="feature-list">
+            <li><span class="fdot" style="background:var(--c-fire);"></span><span><b>Smoke, heat &amp; flame detectors —</b> the most common types, plus UV/IR sensing for high-risk areas.</span></li>
+            <li><span class="fdot" style="background:var(--c-fire);"></span><span><b>Control panel —</b> receives signals and activates alarms, shows zone status.</span></li>
+            <li><span class="fdot" style="background:var(--c-fire);"></span><span><b>Sounders &amp; notification —</b> audible/visual alerts to security and fire departments.</span></li>
+          </ul>
+          <div class="benefit-strip">
+            <span class="benefit-pill" style="background:var(--c-fire);">Improved response time</span>
+            <span class="benefit-pill" style="background:var(--c-fire);">Regulatory compliance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 BATTERIES -->
+  <div class="module" id="batteries">
+    <div class="wrap">
+      <div class="mod-grid rev reveal">
+        <div class="mod-media pad">
+          <img src="images/batteries.jpg" alt="IAK 51.2V lithium battery packs — 105Ah, 176Ah, 280Ah">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-battery);">BATTERIES FOR SOLAR / DATA CENTRE</span>
+          <h2>Lightweight, long-lasting, high performance.</h2>
+          <p class="solution">Lithium batteries store and release energy using lithium ions — lighter and higher-performing than lead-acid or nickel-cadmium alternatives.</p>
+          <div class="spec-row">
+            <div class="spec-box"><div class="v">51.2V · 105Ah</div><div class="l">Standard pack</div></div>
+            <div class="spec-box"><div class="v">51.2V · 176Ah</div><div class="l">Mid capacity</div></div>
+            <div class="spec-box"><div class="v">51.2V · 280Ah</div><div class="l">High capacity</div></div>
+            <div class="spec-box"><div class="v">20–50kWh+</div><div class="l">High-voltage packs</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 SOLAR -->
+  <div class="module" id="solar">
+    <div class="wrap">
+      <div class="mod-grid reveal">
+        <div class="mod-media pad">
+          <img src="images/solar_diagram.jpg" alt="Solar system diagram: panels, inverter, charge controller, battery bank, house">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-solar);">SOLAR SYSTEM INSTALLATION</span>
+          <h2>Sunlight, converted into reliable power.</h2>
+          <p class="solution">A clean, renewable, eco-friendly setup that reduces electricity bills and dependence on fossil fuels — sized for residential, commercial, and industrial use.</p>
+          <table class="mini-table">
+            <tr><th>Deployment</th><th>What we deliver</th></tr>
+            <tr><td>Residential</td><td>Customized solutions that reduce home energy costs.</td></tr>
+            <tr><td>Commercial</td><td>Systems that cut costs and enhance sustainability.</td></tr>
+            <tr><td>Industrial</td><td>Robust, reliable energy for large-scale operations.</td></tr>
+            <tr><td>Energy storage</td><td>Reliable power even when the sun isn't shining.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 TOUCH DISPLAY -->
+  <div class="module" id="touch">
+    <div class="wrap">
+      <div class="mod-grid rev reveal">
+        <div class="mod-media" style="display:grid;grid-template-columns:1fr 1.2fr;">
+          <img src="images/touch_cover.jpg" alt="Close-up of a finger touching an interactive display" style="height:100%;object-fit:cover;">
+          <img src="images/touch_display.jpg" alt="Interactive touch display used in a meeting" style="height:100%;object-fit:cover;">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-touch);">TOUCH DISPLAY / SCREEN</span>
+          <h2>From static projectors to a smart, shared surface.</h2>
+          <p class="problem">Projectors, printed reports, and basic screens make meetings static, time-consuming, and visually unengaging.</p>
+          <p class="solution">A 55" to 98" interactive flat panel that combines high-resolution display, touch functionality, and smart features into one seamless system — a digital whiteboard, and much more.</p>
+          <div class="chip-row">
+            <span class="chip">4K UHD touch</span><span class="chip">Wireless screen share</span><span class="chip">Whiteboard app</span><span class="chip">Video conferencing</span><span class="chip">Android + Windows</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11 AI VOICE AGENT -->
+  <div class="module" id="voice">
+    <div class="wrap">
+      <div class="mod-grid reveal">
+        <div class="mod-media pad">
+          <img src="images/voice_diagram.jpg" alt="AI voice agent flow: speech recognition, natural language processing, text-to-speech, response">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-voice);">AI-POWERED VOICE AGENT</span>
+          <h2>A conversation that never puts callers on hold.</h2>
+          <p class="problem">Relying on human agents leads to call delays, missed inquiries, and overloaded call centers during peak hours.</p>
+          <p class="solution">A virtual assistant that interacts using natural spoken language, understands meaning through AI, and responds with accurate spoken replies — in real time, 24/7.</p>
+          <div class="quote-block">
+            <div class="line"><b>Customer:</b> "I want to check my internet bill."</div>
+            <div class="line"><b>Voice agent:</b> "Sure, please wait while I retrieve your account details. Your current bill is $35 due by July 10."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12 CABLING -->
+  <div class="module" id="cabling">
+    <div class="wrap">
+      <div class="mod-grid rev reveal">
+        <div class="mod-media" style="padding:0;">
+          <img src="images/datacentre_cover.jpg" alt="Structured blue Ethernet cabling in a data centre rack">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-data);">DATA CENTRE &amp; CABLE HARNESSING</span>
+          <h2>Thousands of cables, kept clean and traceable.</h2>
+          <p class="solution">Organized bundling, routing, and management of every cable in a data centre — clean, safe installations that are easy to manage, troubleshoot, and scale.</p>
+          <div class="chip-row">
+            <span class="chip">Ethernet</span><span class="chip">Fiber optic</span><span class="chip">Coaxial</span><span class="chip">Twisted pair</span>
+          </div>
+          <div class="benefit-strip">
+            <span class="benefit-pill" style="background:var(--c-data);">Improved airflow</span>
+            <span class="benefit-pill" style="background:var(--c-data);">Easier troubleshooting</span>
+            <span class="benefit-pill" style="background:var(--c-data);">Scalable</span>
+          </div>
+        </div>
+      </div>
+      <div class="wrap" style="padding:0;margin-top:56px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+          <div class="mod-media" style="padding:0;"><img src="images/cable_ethernet.jpg" alt="Ethernet cable"><div style="padding:14px 16px;font-size:13.5px;font-weight:600;">Ethernet Cable</div></div>
+          <div class="mod-media" style="padding:0;"><img src="images/cable_fiber.jpg" alt="Fiber optic cable"><div style="padding:14px 16px;font-size:13.5px;font-weight:600;">Fiber Optic Cable</div></div>
+          <div class="mod-media" style="padding:0;"><img src="images/cable_coaxial.jpg" alt="Coaxial cable"><div style="padding:14px 16px;font-size:13.5px;font-weight:600;">Coaxial Cable</div></div>
+          <div class="mod-media" style="padding:0;"><img src="images/cable_twistedpair.jpg" alt="Twisted pair cable"><div style="padding:14px 16px;font-size:13.5px;font-weight:600;">Twisted Pair Cable</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 13 TELECOM -->
+  <div class="module" id="telecom">
+    <div class="wrap">
+      <div class="mod-grid reveal">
+        <div class="mod-media">
+          <img src="images/telecom_cover.jpg" alt="Fiber optic cable with Wi-Fi and network overlay">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-telecom);">WIRED &amp; WIRELESS TELECOMMUNICATION</span>
+          <h2>Connectivity, whichever way it needs to travel.</h2>
+          <p class="solution">Telecommunication transmits information over long distances — wired, over physical cable, or wireless, over electromagnetic waves. We design and install both.</p>
+          <ul class="feature-list">
+            <li><span class="fdot" style="background:var(--c-telecom);"></span><span><b>Wired —</b> structured cabling, fibre optic installs, network infrastructure.</span></li>
+            <li><span class="fdot" style="background:var(--c-telecom);"></span><span><b>Wireless —</b> Wi-Fi networks, point-to-point links, mobile solutions.</span></li>
+            <li><span class="fdot" style="background:var(--c-telecom);"></span><span><b>VoIP &amp; unified communication —</b> voice, video, and data on one platform.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 14 NETWORK -->
+  <div class="module" id="network">
+    <div class="wrap">
+      <div class="mod-grid rev reveal">
+        <div class="mod-media">
+          <img src="images/network_cover.jpg" alt="Network globe visualization over server data">
+        </div>
+        <div class="mod-copy">
+          <span class="eyebrow-label" style="background:var(--c-network);">NETWORK MONITORING &amp; MANAGEMENT</span>
+          <h2>Secure, efficient, reliable — around the clock.</h2>
+          <p class="solution">Controlling, monitoring, and optimizing how internet resources are used across a network — with 24/7 oversight and quick resolution of any issue.</p>
+          <div class="chip-row">
+            <span class="chip">Firewall</span><span class="chip">Anti-malware</span><span class="chip">Intrusion detection</span><span class="chip">VPN</span><span class="chip">Cloud security</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow-label" style="background:var(--ink);">OUR ACHIEVEMENTS</span>
+        <h2>Delivered — not just proposed.</h2>
+        <p class="desc">A track record across commercial and residential sites in Rawalpindi and Islamabad.</p>
+      </div>
+
+      <div class="ach-card reveal">
+        <h3>CCTV Surveillance — Pronet (Pvt) Ltd. / PTCL</h3>
+        <p>IAK has had the privilege of working with M/s Pronet Pvt Ltd. as project partner, contributing IP video monitoring expertise to PTCL's iSentry Personal project — a collaboration that showcases our ability to deliver high-quality solutions with leading organizations.</p>
+        <div class="ach-media"><img src="images/brand_collage.jpg" alt="HIKVISION, Dahua, TVT, IMOU, and Tenda camera products used by IAK"></div>
+        <div class="table-scroll">
+          <table class="data">
+            <thead><tr><th>Site</th><th>Location</th><th>Cameras</th><th>Qty</th></tr></thead>
+            <tbody>
+              <tr><td>Zee Brothers</td><td>Bahria Town</td><td>HIK Vision</td><td>46</td></tr>
+              <tr><td>Easy Properties</td><td>Bahria Town</td><td>Dahua</td><td>7</td></tr>
+              <tr><td>Phase 8 Hamlet</td><td>Bahria Town</td><td>Tenda</td><td>8</td></tr>
+              <tr><td>Phase 8 Hamlet</td><td>Bahria Town</td><td>HIK Vision</td><td>6</td></tr>
+              <tr><td>Phase 8 Hamlet</td><td>Bahria Town</td><td>Dahua</td><td>8</td></tr>
+              <tr><td>Phase 4</td><td>Bahria Town</td><td>TVT + Floureon</td><td>6 + 1</td></tr>
+              <tr><td>Top Taste</td><td>Gulshan Abad, Adiyala Road</td><td>Dahua</td><td>25</td></tr>
+              <tr><td>Classic Mart</td><td>Adiyala Road</td><td>HIK + IMOU PTZ</td><td>85 + 3</td></tr>
+              <tr><td>AB Construction Company</td><td>Gulberg Greens</td><td>HIK + IMOU PTZ</td><td>12 + 1</td></tr>
+              <tr><td>Gulistan Colony</td><td>Gulistan</td><td>Dahua</td><td>6</td></tr>
+              <tr><td>CDA Sector B-15, Block-C</td><td>Islamabad</td><td>Tenda</td><td>2</td></tr>
+              <tr><td>CDA Sector B-17, Block-B</td><td>Islamabad</td><td>Tenda</td><td>4</td></tr>
+              <tr><td>Bun Cheez Bakers</td><td>Rawalakot</td><td>HIK Vision</td><td>20</td></tr>
+              <tr><td>Good Food Bakers</td><td>Shahpur</td><td>Dahua</td><td>8</td></tr>
+              <tr><td>Good Way Bakers</td><td>Gulstan Abad, Adiyala Road</td><td>Dahua</td><td>8</td></tr>
+              <tr><td>Good Food Bakers</td><td>Adiyala Road</td><td>Dahua</td><td>10</td></tr>
+              <tr><td>Grand Sapphire Marquee</td><td>Adiyala Road</td><td>HIK Vision</td><td>35</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ach-card reveal">
+        <h3>Fire Detection &amp; Alarm System — PTCL Pakistan</h3>
+        <p>Once again an honour for IAK — we supplied and installed fire detection and alarm systems at several PTCL offices across Rawalpindi and Islamabad.</p>
+        <table class="mini-table">
+          <tr><th>Site</th><th>Location</th></tr>
+          <tr><td>PTCL Exchange — Main Building</td><td>Satellite Town, Rawalpindi</td></tr>
+          <tr><td>PTCL Exchange — International Gateway Building</td><td>Satellite Town, Rawalpindi</td></tr>
+          <tr><td>PTCL Exchange — NWD (Network Data Centre) Building</td><td>Satellite Town, Rawalpindi</td></tr>
+          <tr><td>PTCL Exchange — CDDT Data Centre</td><td>Sector H-9, Islamabad</td></tr>
+          <tr><td>PTCL Exchange — Admin Building</td><td>Sector F-5, Islamabad</td></tr>
+          <tr><td>PTCL Exchange — Technical Building</td><td>Sector F-5, Islamabad</td></tr>
+        </table>
+        <table class="mini-table" style="margin-top:28px;">
+          <tr><th>Item</th><th>Model #</th><th>Category</th></tr>
+          <tr><td>Intelligent Alarm Control Panel</td><td>GST 200</td><td>Fire Alarm</td></tr>
+          <tr><td>Intelligent Photoelectric Smoke Detector</td><td>DI-9102E</td><td>Smoke Detector</td></tr>
+          <tr><td>Intelligent Rate of Rise &amp; Fixed Temp</td><td>DI-9103E</td><td>Heat Detector</td></tr>
+          <tr><td>Emergency Gas Override Control</td><td>C-9317</td><td>Gas Detector</td></tr>
+          <tr><td>Network Card</td><td>P-9940A</td><td>Networking</td></tr>
+          <tr><td>Intelligent Sounder Strobe</td><td>I-9403</td><td>Sounder</td></tr>
+          <tr><td>Digital Manual Call Point</td><td>DI-9204E</td><td>Manual Call Point</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="contact-copy reveal">
+          <span class="eyebrow-label" style="background:#2A2A2C;color:#fff;">CONTACT US</span>
+          <h2>Let's build the system your operation needs.</h2>
+          <p>Tell us what you're securing, connecting, or automating — a home, a warehouse, a data centre — and our team will scope the right combination of systems.</p>
+          <ul class="contact-list">
+            <li><span class="k">PHONE</span><span class="v">+92 (316) 514 7531</span></li>
+            <li><span class="k">WEBSITE</span><span class="v">www.iaksolutions.com</span></li>
+            <li><span class="k">HEADQUARTERS</span><span class="v">Rawalpindi, Pakistan</span></li>
+          </ul>
+        </div>
+        <div class="contact-panel reveal">
+          <span class="tag">START A PROJECT</span>
+          <h3>Request a site assessment</h3>
+          <p>Share a few details about your site and the systems you're considering — CCTV, fire detection, solar, networking, or a combination — and we'll follow up to schedule a walkthrough.</p>
+          <a href="tel:+923165147531" class="btn btn-primary">Call +92 (316) 514 7531</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <img src="images/iak_logo_clean.png" alt="IAK Solutions">
+    <span>Intelligent Automation &amp; Knowledge — Rawalpindi, Pakistan</span>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuBtn.addEventListener('click', () => mobileNav.classList.toggle('open'));
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.reveal').forEach(el => { el.classList.add('pre'); io.observe(el); });
+  });
+</script>
+
+</body>
+</html>
