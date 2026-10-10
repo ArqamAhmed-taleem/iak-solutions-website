@@ -6,6 +6,7 @@
 <title>IAK Solutions — Intelligent Automation & Knowledge</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
   :root{
     --ink:#0B0B0C;
@@ -258,6 +259,39 @@
   .contact-panel p{color:#B9B9B9;font-size:14.5px;margin-bottom:24px;}
   .contact-panel .btn-primary{background:var(--white);color:var(--ink);width:100%;justify-content:center;}
   .contact-panel .btn-primary:hover{background:#eee;}
+
+  /* ---------- WhatsApp ---------- */
+  .contact-list .v a:hover{text-decoration:underline;}
+  .wa-form{display:flex;flex-direction:column;gap:12px;margin-bottom:14px;}
+  .wa-form input,.wa-form select,.wa-form textarea{
+    width:100%;font:inherit;font-size:14.5px;color:var(--white);
+    background:#0F0F10;border:1px solid #2A2A2C;border-radius:var(--radius-sm);padding:12px 14px;
+  }
+  .wa-form textarea{min-height:96px;resize:vertical;}
+  .wa-form input::placeholder,.wa-form textarea::placeholder{color:#6E6E72;}
+  .wa-form input:focus,.wa-form select:focus,.wa-form textarea:focus{outline:none;border-color:#25D366;}
+  .btn-wa{background:#25D366;color:#fff;width:100%;justify-content:center;border:none;cursor:pointer;font-family:inherit;}
+  .btn-wa:hover{background:#1EBE5A;box-shadow:0 6px 18px rgba(37,211,102,0.3);transform:translateY(-1px);}
+  .btn-wa i{font-size:18px;}
+  .contact-panel .btn-call{background:transparent;color:var(--white);border:1.5px solid #2A2A2C;width:100%;justify-content:center;}
+  .contact-panel .btn-call:hover{border-color:#fff;}
+
+  .wa-float{
+    position:fixed;right:22px;bottom:22px;z-index:98;
+    width:58px;height:58px;border-radius:50%;
+    background:#25D366;color:#fff;font-size:31px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.22);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .wa-float:hover{transform:scale(1.08);box-shadow:0 10px 26px rgba(0,0,0,0.28);}
+  .wa-float .wa-tip{
+    position:absolute;right:70px;white-space:nowrap;
+    background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:8px 12px;border-radius:8px;
+    opacity:0;pointer-events:none;transform:translateX(6px);transition:opacity .2s, transform .2s;
+  }
+  .wa-float:hover .wa-tip{opacity:1;transform:translateX(0);}
+  @media(max-width:640px){.wa-float{right:16px;bottom:16px;width:54px;height:54px;font-size:28px;}.wa-float .wa-tip{display:none;}}
 
   footer{padding:36px 0;border-top:1px solid var(--line);}
   .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
@@ -761,6 +795,7 @@
           <p>Tell us what you're securing, connecting, or automating — a home, a warehouse, a data centre — and our team will scope the right combination of systems.</p>
           <ul class="contact-list">
             <li><span class="k">PHONE</span><span class="v">+92 (316) 514 7531</span></li>
+            <li><span class="k">WHATSAPP</span><span class="v"><a href="https://wa.me/923338222478" target="_blank" rel="noopener">+92 (333) 822 2478</a></span></li>
             <li><span class="k">WEBSITE</span><span class="v">www.iaksolutions.com</span></li>
             <li><span class="k">HEADQUARTERS</span><span class="v">Rawalpindi, Pakistan</span></li>
           </ul>
@@ -769,7 +804,27 @@
           <span class="tag">START A PROJECT</span>
           <h3>Request a site assessment</h3>
           <p>Share a few details about your site and the systems you're considering — CCTV, fire detection, solar, networking, or a combination — and we'll follow up to schedule a walkthrough.</p>
-          <a href="tel:+923165147531" class="btn btn-primary">Call +92 (316) 514 7531</a>
+          <form id="waForm" class="wa-form">
+            <input id="waName" type="text" placeholder="Your name" required>
+            <select id="waSystem" aria-label="System you're interested in">
+              <option value="">System you're interested in (optional)</option>
+              <option>AI-CCTV Surveillance</option>
+              <option>Remote Monitoring</option>
+              <option>Fire Detection &amp; Alarm</option>
+              <option>Solar Installation</option>
+              <option>Batteries</option>
+              <option>Networking / Telecom</option>
+              <option>Data Centre Cabling</option>
+              <option>Digital Warehouse</option>
+              <option>Fleet Technology</option>
+              <option>Touch Display</option>
+              <option>AI Voice Agent</option>
+              <option>Multiple / Not sure</option>
+            </select>
+            <textarea id="waMsg" placeholder="Tell us about your site" required></textarea>
+            <button type="submit" class="btn btn-wa"><i class="fa-brands fa-whatsapp"></i> Send on WhatsApp</button>
+          </form>
+          <a href="tel:+923165147531" class="btn btn-call">Or call +92 (316) 514 7531</a>
         </div>
       </div>
     </div>
@@ -783,6 +838,27 @@
     <span>Intelligent Automation &amp; Knowledge — Rawalpindi, Pakistan</span>
   </div>
 </footer>
+
+<a href="https://wa.me/923338222478?text=Hi%20IAK%20Solutions%2C%20I%27d%20like%20to%20know%20more%20about%20your%20services."
+   class="wa-float" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+  <span class="wa-tip">Chat with us on WhatsApp</span>
+</a>
+
+<script>
+  // WhatsApp contact form → opens a pre-filled chat
+  const WA_NUMBER = '923338222478';
+  document.getElementById('waForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('waName').value.trim();
+    const system = document.getElementById('waSystem').value;
+    const msg = document.getElementById('waMsg').value.trim();
+    let text = `Hi IAK Solutions, I'm ${name}.`;
+    if (system) text += `\nInterested in: ${system}`;
+    text += `\n\n${msg}`;
+    window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+  });
+</script>
 
 <script>
   const menuBtn = document.getElementById('menuBtn');
