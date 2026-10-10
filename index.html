@@ -276,27 +276,48 @@
   .contact-panel .btn-call{background:transparent;color:var(--white);border:1.5px solid #2A2A2C;width:100%;justify-content:center;}
   .contact-panel .btn-call:hover{border-color:#fff;}
 
-  .wa-float{
+  /* ---------- floating buttons (WhatsApp + live chat) ---------- */
+  .fab{
     position:fixed;right:22px;bottom:22px;z-index:98;
-    width:58px;height:58px;border-radius:50%;
-    background:#25D366;color:#fff;font-size:31px;
+    width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;font-family:inherit;
+    color:#fff;font-size:31px;
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 6px 18px rgba(0,0,0,0.22);
-    transition:transform .2s ease, box-shadow .2s ease;
+    transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
   }
-  .wa-float:hover{transform:scale(1.08);box-shadow:0 10px 26px rgba(0,0,0,0.28);}
-  .wa-float .wa-tip{
+  .fab:hover{transform:scale(1.08);box-shadow:0 10px 26px rgba(0,0,0,0.28);}
+  .fab .fab-tip{
     position:absolute;right:70px;white-space:nowrap;
     background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:8px 12px;border-radius:8px;
     opacity:0;pointer-events:none;transform:translateX(6px);transition:opacity .2s, transform .2s;
   }
-  .wa-float:hover .wa-tip{opacity:1;transform:translateX(0);}
-  @media(max-width:640px){.wa-float{right:16px;bottom:16px;width:54px;height:54px;font-size:28px;}.wa-float .wa-tip{display:none;}}
-  .wa-float{border:none;cursor:pointer;font-family:inherit;}
-  .wa-float .ic-close{display:none;font-size:24px;}
-  .wa-float.open .ic-wa{display:none;}
-  .wa-float.open .ic-close{display:block;}
-  .wa-float.open .wa-tip{display:none;}
+  .fab:hover .fab-tip{opacity:1;transform:translateX(0);}
+  .fab .ic-close{display:none;font-size:24px;}
+  .fab.open .ic-main{display:none;}
+  .fab.open .ic-close{display:block;}
+  .fab.open .fab-tip{display:none;}
+  .fab .fab-dot{
+    position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;
+    background:#E53935;border:2px solid #fff;display:none;
+  }
+  .fab.unread .fab-dot{display:block;}
+  .fab[hidden]{display:none;}
+  .fab:disabled{opacity:.6;cursor:default;transform:none;}
+
+  .wa-float{background:#25D366;}
+  .chat-float{background:var(--ink);font-size:25px;display:none;}
+  /* when live chat is switched on: chat button at the bottom, WhatsApp above it */
+  body.has-live .chat-float{display:flex;}
+  body.has-live .chat-float[hidden]{display:none;}
+  body.has-live .wa-float{bottom:92px;}
+  body.live-open .wa-float, body.live-open .chat-float{display:none;}
+
+  @media(max-width:640px){
+    .fab{right:16px;bottom:16px;width:54px;height:54px;font-size:28px;}
+    .chat-float{font-size:23px;}
+    body.has-live .wa-float{bottom:80px;}
+    .fab .fab-tip{display:none;}
+  }
 
   /* ---------- WhatsApp chat window ---------- */
   .wa-chat{
@@ -309,7 +330,11 @@
     transition:opacity .2s ease, transform .2s ease, visibility .2s;
   }
   .wa-chat.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;}
-  @media(max-width:640px){.wa-chat{right:16px;left:16px;bottom:84px;width:auto;max-width:none;}}
+  body.has-live .wa-chat{bottom:162px;}
+  @media(max-width:640px){
+    .wa-chat{right:16px;left:16px;bottom:84px;width:auto;max-width:none;}
+    body.has-live .wa-chat{bottom:146px;}
+  }
   .wa-head{background:#075E54;color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px;}
   .wa-avatar{
     width:42px;height:42px;border-radius:50%;background:#fff;color:#075E54;flex:none;
@@ -322,7 +347,7 @@
   .wa-head .wa-x:hover{opacity:1;}
   .wa-body{
     background:#ECE5DD;padding:16px 14px;display:flex;flex-direction:column;gap:8px;
-    max-height:320px;min-height:180px;overflow-y:auto;
+    max-height:min(320px, calc(100vh - 420px));min-height:150px;overflow-y:auto;
   }
   .wa-bubble{
     max-width:85%;padding:9px 12px;border-radius:10px;font-size:14px;line-height:1.45;
@@ -921,15 +946,30 @@
   <div class="wa-foot">Your message will open in WhatsApp to send</div>
 </div>
 
-<button class="wa-float" id="waToggle" aria-label="Chat with us on WhatsApp" aria-expanded="false" aria-controls="waChat">
-  <i class="fa-brands fa-whatsapp ic-wa"></i>
+<!-- WhatsApp button: opens the WhatsApp message box -->
+<button class="fab wa-float" id="waToggle" aria-label="Message us on WhatsApp" aria-expanded="false" aria-controls="waChat">
+  <i class="fa-brands fa-whatsapp ic-main"></i>
   <i class="fa-solid fa-xmark ic-close"></i>
-  <span class="wa-tip">Chat with us on WhatsApp</span>
+  <span class="fab-tip">Message us on WhatsApp</span>
+</button>
+
+<!-- Live chat button: opens live chat on this website (shown only when TAWK_LINK is set) -->
+<button class="fab chat-float" id="liveToggle" aria-label="Live chat on this website" disabled>
+  <i class="fa-solid fa-comment-dots ic-main"></i>
+  <span class="fab-tip">Live chat with us</span>
+  <span class="fab-dot" aria-hidden="true"></span>
 </button>
 
 <script>
-  // WhatsApp contact form → opens a pre-filled chat
+  // ======== SETTINGS ========
+  // Your WhatsApp number: country code + number, no + or spaces
   const WA_NUMBER = '923338222478';
+  // Your tawk.to "Direct Chat Link", e.g. 'https://tawk.to/chat/66abc123def456/1i2j3k4l'
+  // Leave it empty ('') and the live-chat button stays hidden.
+  const TAWK_LINK = 'https://tawk.to/chat/6acaa299e38f1134c6d92c9d/1k4jomacq';
+  // ==========================
+
+  // WhatsApp contact form → opens a pre-filled chat
   document.getElementById('waForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('waName').value.trim();
@@ -960,7 +1000,7 @@
       toggle.classList.toggle('open', open);
       chat.setAttribute('aria-hidden', String(!open));
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Close chat' : 'Chat with us on WhatsApp');
+      toggle.setAttribute('aria-label', open ? 'Close WhatsApp box' : 'Message us on WhatsApp');
       if (open && window.matchMedia('(min-width: 641px)').matches) setTimeout(() => input.focus(), 200);
     };
     toggle.addEventListener('click', () => setOpen(!chat.classList.contains('open')));
@@ -1019,6 +1059,55 @@
         input.setSelectionRange(input.value.length, input.value.length);
       });
     });
+  })();
+
+  // Live chat button (tawk.to) — separate from WhatsApp
+  (() => {
+    const liveBtn = document.getElementById('liveToggle');
+    const tawkSrc = TAWK_LINK.trim().split('?')[0].replace('https://tawk.to/chat/', 'https://embed.tawk.to/');
+    if (!tawkSrc) { liveBtn.hidden = true; return; }
+
+    document.body.classList.add('has-live');
+    window.Tawk_API = window.Tawk_API || {};
+    window.Tawk_LoadStart = new Date();
+
+    const closeLive = () => {
+      if (Tawk_API.hideWidget) Tawk_API.hideWidget();
+      document.body.classList.remove('live-open');
+    };
+
+    Tawk_API.onLoad = () => {
+      Tawk_API.hideWidget();            // hide tawk's own bubble; our button opens it
+      liveBtn.disabled = false;
+    };
+    Tawk_API.onChatMinimized = closeLive;
+    Tawk_API.onChatHidden = () => document.body.classList.remove('live-open');
+    // a reply arrives while the chat is closed → red dot on the chat button
+    Tawk_API.onChatMessageAgent = () => {
+      if (!document.body.classList.contains('live-open')) liveBtn.classList.add('unread');
+    };
+
+    liveBtn.addEventListener('click', () => {
+      if (liveBtn.disabled) return;
+      // close the WhatsApp box if it's open
+      const wa = document.getElementById('waChat');
+      if (wa.classList.contains('open')) document.getElementById('waClose').click();
+      liveBtn.classList.remove('unread');
+      document.body.classList.add('live-open');
+      Tawk_API.showWidget();
+      Tawk_API.maximize();
+    });
+
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = tawkSrc;
+    s.charset = 'UTF-8';
+    s.setAttribute('crossorigin', '*');
+    document.body.appendChild(s);
+    // if the chat service can't load (offline or blocked), keep WhatsApp only
+    setTimeout(() => {
+      if (liveBtn.disabled) { liveBtn.hidden = true; document.body.classList.remove('has-live'); }
+    }, 12000);
   })();
 </script>
 
