@@ -292,6 +292,65 @@
   }
   .wa-float:hover .wa-tip{opacity:1;transform:translateX(0);}
   @media(max-width:640px){.wa-float{right:16px;bottom:16px;width:54px;height:54px;font-size:28px;}.wa-float .wa-tip{display:none;}}
+  .wa-float{border:none;cursor:pointer;font-family:inherit;}
+  .wa-float .ic-close{display:none;font-size:24px;}
+  .wa-float.open .ic-wa{display:none;}
+  .wa-float.open .ic-close{display:block;}
+  .wa-float.open .wa-tip{display:none;}
+
+  /* ---------- WhatsApp chat window ---------- */
+  .wa-chat{
+    position:fixed;right:22px;bottom:94px;z-index:98;
+    width:350px;max-width:calc(100vw - 32px);
+    background:#fff;border-radius:18px;overflow:hidden;
+    box-shadow:0 12px 40px rgba(0,0,0,0.22);
+    display:flex;flex-direction:column;
+    opacity:0;transform:translateY(12px) scale(.98);pointer-events:none;visibility:hidden;
+    transition:opacity .2s ease, transform .2s ease, visibility .2s;
+  }
+  .wa-chat.open{opacity:1;transform:none;pointer-events:auto;visibility:visible;}
+  @media(max-width:640px){.wa-chat{right:16px;left:16px;bottom:84px;width:auto;max-width:none;}}
+  .wa-head{background:#075E54;color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px;}
+  .wa-avatar{
+    width:42px;height:42px;border-radius:50%;background:#fff;color:#075E54;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Inter Tight',sans-serif;font-weight:800;font-size:14px;
+  }
+  .wa-head b{display:block;font-size:15px;line-height:1.2;}
+  .wa-head span{font-size:12.5px;opacity:.85;}
+  .wa-head .wa-x{margin-left:auto;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;opacity:.85;padding:4px;}
+  .wa-head .wa-x:hover{opacity:1;}
+  .wa-body{
+    background:#ECE5DD;padding:16px 14px;display:flex;flex-direction:column;gap:8px;
+    max-height:320px;min-height:180px;overflow-y:auto;
+  }
+  .wa-bubble{
+    max-width:85%;padding:9px 12px;border-radius:10px;font-size:14px;line-height:1.45;
+    box-shadow:0 1px 1px rgba(0,0,0,0.08);white-space:pre-wrap;word-wrap:break-word;color:#111;
+  }
+  .wa-bubble.in{background:#fff;align-self:flex-start;border-top-left-radius:2px;}
+  .wa-bubble.out{background:#DCF8C6;align-self:flex-end;border-top-right-radius:2px;}
+  .wa-bubble .t{display:block;font-size:10.5px;color:#888;text-align:right;margin-top:3px;}
+  .wa-note{align-self:center;font-size:12px;color:#555;background:rgba(255,255,255,.7);padding:5px 10px;border-radius:8px;}
+  .wa-quick{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+  .wa-quick button{
+    font:inherit;font-size:12.5px;font-weight:500;color:#075E54;background:#fff;
+    border:1px solid #CFE3DD;border-radius:100px;padding:6px 11px;cursor:pointer;
+  }
+  .wa-quick button:hover{background:#F0FAF6;border-color:#25D366;}
+  .wa-input{display:flex;align-items:flex-end;gap:8px;padding:10px;background:#F0F0F0;}
+  .wa-input textarea{
+    flex:1;font:inherit;font-size:14px;color:#111;resize:none;
+    border:none;border-radius:20px;padding:10px 14px;max-height:110px;min-height:40px;line-height:1.4;background:#fff;
+  }
+  .wa-input textarea:focus{outline:2px solid #25D366;}
+  .wa-send{
+    width:42px;height:42px;border-radius:50%;border:none;flex:none;cursor:pointer;
+    background:#25D366;color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;
+  }
+  .wa-send:hover{background:#1EBE5A;}
+  .wa-send:disabled{background:#B5B5B5;cursor:default;}
+  .wa-foot{font-size:11px;color:#888;text-align:center;padding:0 10px 9px;background:#F0F0F0;}
 
   footer{padding:36px 0;border-top:1px solid var(--line);}
   .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
@@ -839,11 +898,34 @@
   </div>
 </footer>
 
-<a href="https://wa.me/923338222478?text=Hi%20IAK%20Solutions%2C%20I%27d%20like%20to%20know%20more%20about%20your%20services."
-   class="wa-float" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
-  <i class="fa-brands fa-whatsapp"></i>
+<div class="wa-chat" id="waChat" role="dialog" aria-label="Chat with IAK Solutions" aria-hidden="true">
+  <div class="wa-head">
+    <div class="wa-avatar">IAK</div>
+    <div><b>IAK Solutions</b><span>We reply on WhatsApp</span></div>
+    <button class="wa-x" id="waClose" aria-label="Close chat"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="wa-body" id="waBody">
+    <div class="wa-bubble in">Assalam-o-Alaikum! 👋 How can we help you today? Tell us what you'd like to secure, power or connect.<span class="t" id="waTime"></span></div>
+    <div class="wa-quick" id="waQuick">
+      <button type="button" data-msg="Hi IAK Solutions, I'm interested in CCTV cameras. ">CCTV cameras</button>
+      <button type="button" data-msg="Hi IAK Solutions, I'm interested in a fire alarm system. ">Fire alarm system</button>
+      <button type="button" data-msg="Hi IAK Solutions, I'm interested in a solar installation. ">Solar installation</button>
+      <button type="button" data-msg="Hi IAK Solutions, I need help with networking. ">Networking</button>
+      <button type="button" data-msg="Hi IAK Solutions, I would like to get a quote. ">Get a quote</button>
+    </div>
+  </div>
+  <form class="wa-input" id="waChatForm">
+    <textarea id="waChatMsg" rows="1" placeholder="Type a message…" aria-label="Type a message"></textarea>
+    <button type="submit" class="wa-send" id="waSend" aria-label="Send" disabled><i class="fa-solid fa-paper-plane"></i></button>
+  </form>
+  <div class="wa-foot">Your message will open in WhatsApp to send</div>
+</div>
+
+<button class="wa-float" id="waToggle" aria-label="Chat with us on WhatsApp" aria-expanded="false" aria-controls="waChat">
+  <i class="fa-brands fa-whatsapp ic-wa"></i>
+  <i class="fa-solid fa-xmark ic-close"></i>
   <span class="wa-tip">Chat with us on WhatsApp</span>
-</a>
+</button>
 
 <script>
   // WhatsApp contact form → opens a pre-filled chat
@@ -858,6 +940,86 @@
     text += `\n\n${msg}`;
     window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
   });
+
+  // WhatsApp chat window
+  (() => {
+    const chat = document.getElementById('waChat');
+    const toggle = document.getElementById('waToggle');
+    const closeBtn = document.getElementById('waClose');
+    const body = document.getElementById('waBody');
+    const form = document.getElementById('waChatForm');
+    const input = document.getElementById('waChatMsg');
+    const sendBtn = document.getElementById('waSend');
+    const quick = document.getElementById('waQuick');
+
+    const now = () => new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    document.getElementById('waTime').textContent = now();
+
+    const setOpen = (open) => {
+      chat.classList.toggle('open', open);
+      toggle.classList.toggle('open', open);
+      chat.setAttribute('aria-hidden', String(!open));
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close chat' : 'Chat with us on WhatsApp');
+      if (open && window.matchMedia('(min-width: 641px)').matches) setTimeout(() => input.focus(), 200);
+    };
+    toggle.addEventListener('click', () => setOpen(!chat.classList.contains('open')));
+    closeBtn.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+
+    // grow the box as the visitor types, enable Send only when there's text
+    const resize = () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 110) + 'px';
+      sendBtn.disabled = !input.value.trim();
+    };
+    input.addEventListener('input', resize);
+    // Enter sends, Shift+Enter makes a new line
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+    });
+
+    const addBubble = (cls, text) => {
+      const b = document.createElement('div');
+      b.className = 'wa-bubble ' + cls;
+      b.textContent = text;
+      const t = document.createElement('span');
+      t.className = 't';
+      t.textContent = now();
+      b.appendChild(t);
+      body.appendChild(b);
+      body.scrollTop = body.scrollHeight;
+    };
+    const addNote = (text) => {
+      const n = document.createElement('div');
+      n.className = 'wa-note';
+      n.textContent = text;
+      body.appendChild(n);
+      body.scrollTop = body.scrollHeight;
+    };
+
+    const send = (text) => {
+      text = text.trim();
+      if (!text) return;
+      if (quick) quick.remove();
+      addBubble('out', text);
+      input.value = '';
+      resize();
+      // open WhatsApp straight away (inside the click/keypress, so phones don't block it)
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+      addNote('Opening WhatsApp — tap Send there to deliver your message.');
+    };
+
+    form.addEventListener('submit', (e) => { e.preventDefault(); send(input.value); });
+    quick.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        input.value = btn.dataset.msg;
+        resize();
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+      });
+    });
+  })();
 </script>
 
 <script>
